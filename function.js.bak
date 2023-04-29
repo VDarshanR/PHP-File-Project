@@ -1,0 +1,113 @@
+$(document).ready(function()
+{
+    fetchFiles();
+})
+function fetchFiles()
+{
+	$.ajax({
+		type:'post',
+		url:'upload.php',
+		data:"action=fetchfiles",
+		cache:false,
+		async:true,
+		success: function(result)
+		{
+			// console.log(result);
+			if(result != null)
+			{
+				//console.log(JSON.parse(result));
+				// var re = JSON.parse(result);	
+				// showfetchFiles(re);
+				// console.log(re);
+			    showfetchFiles(JSON.parse(result));
+			
+			}
+		}
+	});
+}
+function showfetchFiles(res)
+{
+	var tbData = "<table class='table-bordered' width=60% style='background:#191970; color:#ffffff'>";
+	console.log("RES    :"+res.length);
+	for(var i=2;i<res.length;i++)
+	{
+		tbData +=  "<tr align=center><td>"+res[i].name+"</td><td>"+res[i].modified+"</td><td>"+res[i].size+"</td><td><i class='fas fa-trash' onclick='deletee(\""+res[i].name+"\" )'style=cursor:pointer;''></i></td><td><i class='fas fa-edit' onclick='toupdate(\""+res[i].name+"\") 'style=cursor:pointer;'></i></td></tr>";
+	}
+	tbData+="</table>";
+	$("#table").html(tbData);
+}
+function upload(res)
+{
+	var form_data = new FormData();
+	form_data.append("action","uploadit");
+	form_data.append("file",document.getElementById('file-upload').files[0]);
+	// console.log("file:"+document.getElementById('file-upload').files[0])
+	$.ajax
+	({
+		url: "upload.php", 
+		type: "POST",
+		data:  form_data,
+		contentType: false,
+		cache: false,
+		processData:false,
+		success: function(result)
+		{
+			$('#message').html(result);
+			$('form').trigger('reset');
+			$("#Registration").hide();
+			// location.reload();
+			fetchFiles();
+
+		}
+	});
+	$(document).on('click','#btn_close', function()
+	{
+		$('form').trigger('reset');
+		$('#message').html('');
+		// $("Registration").modal('hide');
+	})
+	
+}
+function deletee(res)
+{
+    $.ajax({
+        url: 'upload.php',
+        method: 'post',
+        data:'action=delete&file='+res,
+        success:function(data)
+        {
+            alert(data);
+			fetchFiles();
+        }
+    })
+}
+function toupdate(res)
+{
+	$('#Updatemodal').modal('show');
+	$("#filename").val(res);
+	$("#hide").val(res);
+
+	$(document).on('click','#btn_closee',function()
+	{
+		$("#Updatemodal").modal('hide');
+		$(".modal-backdrop").remove();
+	})
+}
+function update()
+{
+	$.ajax({
+		url: 'upload.php',
+		method: 'post',
+		data:'action=update&fname='+$("#hide").val()+'&newname='+$("#filename").val(),
+		success:function(data)
+        {
+            if(JSON.parse(data).result == "success")
+            {  
+                alert("Successfully updated");
+                 $('#Updatemodal').modal('hide');
+                $('.modal-backdrop').remove();
+                fetchFiles();
+            }
+        }
+	})
+}

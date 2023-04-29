@@ -1,0 +1,126 @@
+<?php
+
+if (isset($_POST['action']))
+{   
+  if($_POST["action"] == "uploadit")
+  {
+    $fileTmpPath = $_FILES['file']['tmp_name'];
+    $fileName = $_FILES['file']['name'];
+    $fileSize = $_FILES['file']['size'];
+    $fileType = $_FILES['file']['type'];
+    $fileNameCmps = explode(".", $fileName);
+    $fileExtension = strtolower(end($fileNameCmps));
+
+    $uploadFileDir = './uploads/';
+    $dest_path = $uploadFileDir . $fileName;
+
+    $target_file = $uploadFileDir.basename($fileName);
+
+    
+    $allowedfileExtensions = array('jpg', 'gif', 'png', 'zip', 'txt', 'pdf', 'docx');
+    
+    if (in_array($fileExtension, $allowedfileExtensions))
+    {
+      if(file_exists($target_file))
+      {
+        echo 'Already file exist';
+      }
+      elseif($fileSize>50000000)
+      {
+        echo "File is too large to upload";
+      }       
+      elseif(move_uploaded_file($fileTmpPath, $dest_path))
+      {
+        echo "<script>alert('File is successfully uploaded');</script>";
+      }
+      else
+      {
+        echo  'Please make sure the upload directory is writable by web server';
+      }
+    }
+    else
+    {
+      echo 'Upload Valid Extension';
+    }
+	}
+
+	if($_POST["action"] == "fetchfiles")
+	{
+		$dirpath = "uploads";
+		$files  = scandir($dirpath);
+		$fileArr = array();
+		foreach($files as $filename)
+    {
+			array_push($fileArr,array("name"=>basename($filename),"modified"=>date("F d Y H:i:s.",filemtime("uploads/".$filename)),"size"=>formatSizeUnits(filesize("uploads/".$filename))));
+		}
+		echo json_encode($fileArr);
+	}
+ if($_POST["action"] == "getName")
+	{
+    $dirpath = "uploads";
+		$files  = scandir($dirpath);
+		$fileArr = array();
+		foreach($files as $filename)
+    {
+			array_push($fileArr,array("name"=>basename($filename),"modified"=>date("F d Y H:i:s.",filemtime("uploads/".$filename)),"size"=>formatSizeUnits(filesize("uploads/".$filename))));
+		}
+		echo json_encode($fileArr);
+  }
+  if($_POST["action"] == "update")
+    {
+      $uploadFileDir = 'uploads/';
+      $Oldname = $uploadFileDir."/".$_POST["fname"];
+      $Newname = $uploadFileDir."/".$_POST["newname"];
+      if(rename($Oldname, $Newname))
+      {
+        echo json_encode(array("result" => "success"));
+      }
+      else
+      {
+        echo json_encode(array("result" => "failure"));
+      }
+    }
+  if($_POST["action"] == "delete")
+  {
+    $uploadFileDir = 'uploads/'; 
+    if (file_exists($uploadFileDir)) 
+    {
+      unlink($uploadFileDir.$_POST['file']); 
+      echo "File deleted successfully.";
+    } 
+    else 
+    { 
+       echo "File not found.";
+    } 
+  }
+}
+  function formatSizeUnits($bytes)
+  {
+    if ($bytes >= 1073741824)
+    {
+      $bytes = number_format($bytes / 1073741824, 2) . ' GB';
+    }
+    elseif ($bytes >= 1048576)
+    {
+      $bytes = number_format($bytes / 1048576, 2) . ' MB';
+    }
+    elseif ($bytes >= 1024)
+    {
+      $bytes = number_format($bytes / 1024, 2) . ' KB';
+    }
+    elseif ($bytes > 1)
+    {
+      $bytes = $bytes . ' bytes';
+    }
+    elseif ($bytes == 1)
+    {
+      $bytes = $bytes . ' byte';
+    }
+    else
+    {
+      $bytes = '0 bytes';
+    }
+  
+    return $bytes;
+  }
+?>

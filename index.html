@@ -1,0 +1,116 @@
+<!DOCTYPE html>1
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/fonts.css">
+    <script src="js/bootstrap.js"></script>
+	<script src="js/jquery.js"></script> <!-- 1 -->
+    <script src="function.js"></script>
+	<link rel="stylesheet" href="css/bootstrap1.css"> <!-- 2 -->
+	<script src="js/bootstrap1.js"></script> <!-- 3 --> 
+    <title>PHP File</title>
+</head>
+<style>
+	#btn1:hover
+	{
+		background-color: #5cb85c;
+		color: #212529;
+		font-weight: bold;
+		
+	}
+	.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th
+	{
+		text-align: center !important
+	}
+	#file
+	{
+		background-color: #191970;
+		color: #ffffff;
+		text-align: center;
+	}
+</style>
+<body class="bg-light">
+
+  <!--Navigation-->
+  <div class="container-fluid"> 
+    <div class="row">
+      <div class="col">
+          <div class="card mt-0" style="background-color: #98AFC7;">
+            <div class="card-title ml-5 my-5">
+                <!--Go to Upload Button--> <hr>
+              <h1 id='file'>FILE OPERATIONS PERFORMED USING AJAX, JQUERY AND PHP</h1><hr>
+              <button type="button" id="btn1" class="btn btn-primary" data-toggle="modal" data-target="#Registration"><i class="fa fa-upload"></i> &nbsp; Go to File Upload</button>
+            </div>
+            <div class="card-body">
+              <div id="table" style="position: relative; left: 19%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  <!--Upload Modal-->            
+  <div class="modal" id="Registration">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h3 class="text-dark">Upload File</h3>
+		</div>
+		<div class="modal-body">
+		<p id="message" class="text-dark" style="font-family: 'Times New Roman', Times, serif; font-size: larger; font-weight: bolder;"></p>
+		  <form>
+			<input type="file" id="file-upload" name="file">
+		  </form>      
+		</div>
+		<div class="modal-footer">
+			<input type="button" name="uploadBtn" value="upload" class="btn btn-success" id="btn_upload" onclick="upload();"/>
+			<button type="button" class="btn btn-danger" data-dismiss="modal" id="btn_close">Close</button>
+		</div>
+	  </div>
+	</div>
+  </div> 
+
+   <!--Update Modal-->
+   <div class="modal" id="Updatemodal">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h3 class="text-dark">Update</h3>
+		</div>
+		<div class="modal-body">
+		<p id="message" class="text-dark">Are you sure you want to update this file?</p>  
+		  <input type="text" class="form-control my-2" id="filename">
+		  <input type="hidden" id="hide">
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-primary" id="btn_update" onclick="update();">Update</button>
+		  <button type="button" class="btn btn-warning" data-dismiss="modal" id="btn_close">Close</button>
+		</div>
+	  </div>
+	</div>
+   </div>
+   
+   <!--Delete Modal-->
+   <div class="modal" id="Deletemodal">
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h3 class="text-dark">Delete</h3>
+		</div>
+		<div class="modal-body">
+		<p id="message" class="text-dark">Are you sure you want to delete this file?</p>  
+		  <input type="text" class="form-control my-2" id="filename1" readonly>
+		  <input type="hidden" id="hide">
+		</div>
+		<div class="modal-footer">
+		  <button type="button" class="btn btn-primary" id="btn_delete" onclick="deletee();">Delete</button>
+		  <button type="button" class="btn btn-warning" data-dismiss="modal" id="btn_close">Close</button>
+		</div>
+	  </div>
+	</div>
+   </div>
+</body>    
+</html>
