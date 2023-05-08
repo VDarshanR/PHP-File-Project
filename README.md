@@ -22,7 +22,8 @@
       can use a web hosting provider that
        supports PHP.
 
--> To use the PHP File Project, copy the project files to the htdocs directory in your XAMPP installation. Then, open a web browser and navigate to http://localhost/PHP-    File-Project/index.html. To upload files, use the provided form on the web page. The files will be saved to a directory on your local machine.
+-> To use the PHP File Project, copy the project files to the htdocs directory in your XAMPP installation. Then, open a web browser and navigate to 
+http://localhost/PHP-File-Project/index.html. To upload files, use the provided form on the web page. The files will be saved to a directory on your local machine.
 
 -> If you would like to contribute to this project, please fork the repository and create a new branch for your changes. Then, submit a pull request with a detailed description of your changes and why they're needed.
 
